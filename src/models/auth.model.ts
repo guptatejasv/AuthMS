@@ -7,6 +7,8 @@ export interface IAuth extends Document {
   password: string;
   dob: Date;
   address: string;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
   role?: "admin" | "superAdmin" | "user";
   isVerified?: boolean;
   otp?: string;
@@ -53,6 +55,8 @@ const AuthSchema: Schema = new Schema(
     otp: {
       type: String,
     },
+    passwordResetToken: String,
+    passwordResetExpires: Date,
   },
   {
     timestamps: true,
