@@ -5,6 +5,9 @@ export interface IAuth extends Document {
   phone: string;
   username: string;
   password: string;
+  dob: Date;
+  address: string;
+  role?: "admin" | "superAdmin" | "user";
   isVerified?: boolean;
   otp?: string;
 }
@@ -29,6 +32,19 @@ const AuthSchema: Schema = new Schema(
       type: String,
       required: true,
       unique: true,
+    },
+    dob: {
+      type: Date,
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["admin", "superAdmin", "user"],
+      default: "user",
     },
     isVerified: {
       type: Boolean,

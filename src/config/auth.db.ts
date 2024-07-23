@@ -1,17 +1,12 @@
 import mongoose from "mongoose";
 
-import dotenv from "dotenv";
-
-dotenv.config();
-
 const connectDB = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/AuthMS_db", {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    } as mongoose.ConnectOptions);
+    mongoose.connect("mongodb://127.0.0.1:27017/AuthMS_db").then(() => {
+      console.log("Connected to the database.");
+    });
   } catch (error) {
-    console.log("There is something wrong with Database connection");
+    console.log(`Database not Connected`);
   }
 };
 
