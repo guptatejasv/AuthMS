@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
 import { sign } from "jsonwebtoken";
 import { Auth } from "../models/auth.model";
 import { Verification } from "../models/auth.verification";
 import twilio from "twilio";
+
+dotenv.config();
 const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
@@ -82,7 +85,8 @@ export const signup = async (req: Request, res: Response) => {
       phone: user.phone,
       otp: OTP,
     });
-
+    req.user = user;
+    console.log(req.user._id);
     res.status(201).json({
       status: "Success",
       token,
