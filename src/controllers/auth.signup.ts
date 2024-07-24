@@ -4,8 +4,8 @@ import { sign } from "jsonwebtoken";
 import { Auth } from "../models/auth.model";
 import { Verification } from "../models/auth.verification";
 import twilio from "twilio";
-const accountSid = "ACee9e580a8393e8e06eab015e4c737887";
-const authToken = "8babce251b224bd632d780b765be3b62";
+const accountSid = process.env.ACCOUNT_SID;
+const authToken = process.env.AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
 
 export const signup = async (req: Request, res: Response) => {
