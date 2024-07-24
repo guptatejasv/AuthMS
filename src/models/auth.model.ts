@@ -5,6 +5,10 @@ export interface IAuth extends Document {
   phone: string;
   username: string;
   password: string;
+  profile: {
+    firstName: string;
+    lastName: string;
+  };
   dob: Date;
   address: string;
   passwordResetToken?: string;
@@ -29,6 +33,16 @@ const AuthSchema: Schema = new Schema(
       type: String,
       required: true,
       unique: true,
+    },
+    profile: {
+      firstName: {
+        type: String,
+        required: true,
+      },
+      lastName: {
+        type: String,
+        required: true,
+      },
     },
     phone: {
       type: String,

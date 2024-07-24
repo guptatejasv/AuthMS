@@ -1,12 +1,10 @@
-import jwt from "jsonwebtoken";
-
+import jwt, { JwtPayload } from "jsonwebtoken";
+import dotenv from "dotenv";
 import { Request, Response, NextFunction } from "express";
 import { Auth } from "../models/auth.model";
 
+dotenv.config();
 const jwt_secret: string = process.env.JWT_SECRET as string;
-interface JwtPayload {
-  _id: string;
-}
 
 export const verify_token = async (
   req: Request,
@@ -18,13 +16,22 @@ export const verify_token = async (
     if (!token) {
       return res.status(400).json({ error: "Invalid token" });
     }
+
     const decode = jwt.verify(token, jwt_secret) as JwtPayload;
-    const user = await Auth.findById(decode?._id).lean();
+
+    if (!decode.id) {
+      res.status(400).json({
+        status: "fail",
+        message: "Token does not contain user id",
+      });
+    }
+
+    const user = await Auth.findById(decode.id);
+
     if (!user) {
       return res.status(400).json({ error: "Invalid user" });
     }
 
-    // req.user = user;
     next();
   } catch (error) {
     console.log("something went wront while verifing the token", error);

@@ -5,7 +5,16 @@ import { Auth } from "../models/auth.model";
 
 export const signup = async (req: Request, res: Response) => {
   try {
-    const { username, email, password, phone, dob, address } = req.body;
+    const {
+      username,
+      email,
+      password,
+      phone,
+      dob,
+      address,
+      firstName,
+      lastName,
+    } = req.body;
     if (!username) {
       return res.send({ message: "Username is required!" });
     }
@@ -38,6 +47,10 @@ export const signup = async (req: Request, res: Response) => {
       phone,
       dob,
       address,
+      profile: {
+        firstName,
+        lastName,
+      },
     });
     const secret = process.env.JWT_SECRET as string;
     const token = sign({ id: user._id }, secret, {

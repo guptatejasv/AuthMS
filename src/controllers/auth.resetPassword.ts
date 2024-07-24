@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import { Auth } from "../models/auth.model";
 import bcrypt from "bcryptjs";
 
-import crypto from "crypto";
-
 export const resetPassword = async (req: Request, res: Response) => {
   try {
     const { token } = req.query;
