@@ -78,4 +78,4 @@ const AuthSchema: Schema = new Schema(
   }
 );
 
-export const Auth = model<IAuth>("User", AuthSchema);
+export const Auth = model<IAuth>("Auth", AuthSchema);

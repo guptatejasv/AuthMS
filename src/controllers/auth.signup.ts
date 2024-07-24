@@ -2,6 +2,11 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import { Auth } from "../models/auth.model";
+import { Verification } from "../models/auth.verification";
+import twilio from "twilio";
+const accountSid = "ACee9e580a8393e8e06eab015e4c737887";
+const authToken = "8babce251b224bd632d780b765be3b62";
+const client = twilio(accountSid, authToken);
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -56,9 +61,32 @@ export const signup = async (req: Request, res: Response) => {
     const token = sign({ id: user._id }, secret, {
       expiresIn: "90d",
     });
+    const digits = "0123456789";
+    let OTP = "";
+    for (let i = 0; i < 6; i++) {
+      OTP += digits[Math.floor(Math.random() * 10)];
+    }
+    let msg;
+    await client.messages
+      .create({
+        body: `your otp verification for user is ${OTP}`,
+        to: `+91${phone}`,
+        from: "+15078734130",
+      })
+      .then(() => {
+        msg = "OTP sent to your phone no.";
+      });
+
+    await Verification.create({
+      userId: user._id,
+      phone: user.phone,
+      otp: OTP,
+    });
+
     res.status(201).json({
       status: "Success",
       token,
+      msg,
       data: {
         user,
       },
