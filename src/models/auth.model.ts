@@ -13,8 +13,11 @@ export interface IAuth extends Document {
   address: string;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
+  emailUpdateToken?: string;
+  emailUpdateTokenExpires?: Date;
   role?: "admin" | "superAdmin" | "user";
   isVerified?: boolean;
+  isEmailVerified?: boolean;
   otp?: string;
 }
 
@@ -66,9 +69,15 @@ const AuthSchema: Schema = new Schema(
       type: Boolean,
       default: false,
     },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
     otp: {
       type: String,
     },
+    emailUpdateToken: String,
+    emailUpdateTokenExpires: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
   },
