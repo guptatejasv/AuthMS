@@ -7,6 +7,7 @@ import { viewProfile } from "../controllers/auth.viewProfile";
 import { verify_token } from "../helpers/jwtverify";
 import { updateProfile } from "../controllers/auth.updateProfile";
 import { verifyPhone } from "../controllers/auth.verifyPhone";
+import { updatePhoneNo } from "../controllers/auth.updatePhone";
 const router = Router();
 
 router.post("/signup", signup);
@@ -17,7 +18,8 @@ router.post("/verify-phone", verifyPhone);
 
 // Secured Routes
 
-router.get("/viewProfile/:id", verify_token, viewProfile);
-router.patch("/updateProfile/:id", verify_token, updateProfile);
+router.get("/viewProfile", verify_token, viewProfile);
+router.patch("/updateProfile", verify_token, updateProfile);
+router.patch("/updatePhoneNo/:id", verify_token, updatePhoneNo);
 
 export default router;

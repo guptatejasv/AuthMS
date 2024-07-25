@@ -11,10 +11,11 @@ export const updateProfile = async (req: Request, res: Response) => {
     }
     if (req.body.email) {
       return res.status(400).json({
-        message: "You can not update phone no.",
+        message: "You can not update Email no.",
       });
     }
-    const user = await Auth.findByIdAndUpdate(req.params.id, req.body, {
+    const id = req.user.id;
+    const user = await Auth.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
     }).select(

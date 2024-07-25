@@ -31,7 +31,8 @@ export const verify_token = async (
     if (!user) {
       return res.status(400).json({ error: "Invalid user" });
     }
-
+    req.user = decode;
+    console.log(req.user);
     next();
   } catch (error) {
     console.log("something went wront while verifing the token", error);

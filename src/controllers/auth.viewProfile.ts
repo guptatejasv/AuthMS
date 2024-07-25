@@ -4,7 +4,10 @@ import { Auth } from "../models/auth.model";
 
 export const viewProfile = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    console.log(req.user);
+    // const { id } = req.params;
+    const id = req.user.id;
+    console.log(id);
     const user = await Auth.findById(id).select(
       "-password -passwordResetToken -passwordResetExpires"
     );
