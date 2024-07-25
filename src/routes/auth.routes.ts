@@ -10,6 +10,7 @@ import { verifyPhone } from "../controllers/auth.verifyPhone";
 import { updatePhoneNo } from "../controllers/auth.updatePhone";
 import { updateEmail } from "../controllers/auth.updateEmail";
 import { verifyNewEmail } from "../controllers/auth.verifyEmail";
+import { authenticator } from "../controllers/auth.authenticator";
 const router = Router();
 
 router.post("/signup", signup);
@@ -18,6 +19,7 @@ router.post("/forgetPassword", forgetPassword);
 router.post("/resetPassword", resetPassword);
 router.post("/verify-phone", verifyPhone);
 router.post("/verifyNewEmail", verifyNewEmail);
+router.post("/authenticator", authenticator);
 
 // Secured Routes
 

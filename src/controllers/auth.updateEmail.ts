@@ -31,10 +31,12 @@ export const updateEmail = async (req: Request, res: Response) => {
     const updateToken = crypto.randomBytes(32).toString("hex");
 
     // Hash the token and set it to the user object with an expiration time
-    user.emailUpdateToken = updateToken;
-
+    user.emailUpdateToken = crypto
+      .createHash("sha256")
+      .update(updateToken)
+      .digest("hex");
+    user.emailUpdateTokenExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
     await user.save();
-    console.log(user);
 
     const resetURL = `${req.protocol}://${req.get(
       "localhost:3000/api/v1/verifyNewEmail"

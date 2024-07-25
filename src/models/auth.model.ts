@@ -11,6 +11,7 @@ export interface IAuth extends Document {
   };
   dob: Date;
   address: string;
+  isTwoFAEnable: false;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
   emailUpdateToken?: string;
@@ -47,6 +48,10 @@ const AuthSchema: Schema = new Schema(
         required: true,
       },
     },
+    isTwoFAEnable: {
+      type: Boolean,
+      default: false,
+    },
     phone: {
       type: String,
       required: true,
@@ -65,6 +70,7 @@ const AuthSchema: Schema = new Schema(
       enum: ["admin", "superAdmin", "user"],
       default: "user",
     },
+
     isVerified: {
       type: Boolean,
       default: false,

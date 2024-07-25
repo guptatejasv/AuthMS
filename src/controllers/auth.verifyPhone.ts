@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import { Verification } from "../models/auth.verification";
+
 import { Auth } from "../models/auth.model";
 
 export const verifyPhone = async (req: Request, res: Response) => {
