@@ -20,6 +20,6 @@ router.post("/verify-phone", verifyPhone);
 
 router.get("/viewProfile", verify_token, viewProfile);
 router.patch("/updateProfile", verify_token, updateProfile);
-router.patch("/updatePhoneNo/:id", verify_token, updatePhoneNo);
+router.patch("/updatePhoneNo", verify_token, updatePhoneNo);
 
 export default router;
