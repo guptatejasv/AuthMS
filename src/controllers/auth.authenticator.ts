@@ -39,7 +39,12 @@ export const authenticator = async (req: Request, res: Response) => {
         const doc = await TwoFactorAuth.findOne({
           email: req.body.email,
         }).select("_id userId");
-        await TwoFactorAuth.findByIdAndDelete({ _id: doc?._id });
+        await TwoFactorAuth.findByIdAndUpdate(
+          { _id: doc?._id },
+          {
+            twoFAEmailOtp: "",
+          }
+        );
 
         return res.status(200).json({
           status: "success",
