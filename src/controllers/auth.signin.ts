@@ -60,6 +60,11 @@ export const signin = async (req: Request, res: Response) => {
           userId: user._id,
         });
         const tFAuser = await TwoFactorAuth.findOne({ userId: user._id });
+        const secret = process.env.JWT_SECRET as string;
+
+        const token = sign({ id: user._id }, secret, {
+          expiresIn: "90d",
+        });
         if (tFAuserMethod?.method == "phone") {
           const digits = "0123456789";
           let OTP = "";
@@ -84,6 +89,7 @@ export const signin = async (req: Request, res: Response) => {
           }
           res.status(200).json({
             status: "success",
+            token,
             message: `${msg}.You need to verify your number.`,
           });
         } else if (tFAuserMethod?.method == "email") {
@@ -109,6 +115,7 @@ export const signin = async (req: Request, res: Response) => {
 
           res.status(200).json({
             status: "success",
+            token,
             message:
               "Two Factor Authentication OTP has been sent to your email...!",
           });

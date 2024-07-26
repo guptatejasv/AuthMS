@@ -15,6 +15,7 @@ const AuthSchema: Schema = new Schema(
     method: {
       type: String,
       required: true,
+      default: "phone",
     },
   },
   {

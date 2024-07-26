@@ -11,6 +11,8 @@ import { updatePhoneNo } from "../controllers/auth.updatePhone";
 import { updateEmail } from "../controllers/auth.updateEmail";
 import { verifyNewEmail } from "../controllers/auth.verifyEmail";
 import { authenticator } from "../controllers/auth.authenticator";
+import { changeTwoFAMethod } from "../controllers/auth.changeTwoFAMethod";
+import { updateTwoFAStatus } from "../controllers/auth.updateTwoFAStatus";
 const router = Router();
 
 router.post("/signup", signup);
@@ -23,6 +25,8 @@ router.post("/authenticator", authenticator);
 
 // Secured Routes
 
+router.post("/changeTwoFAMethod", verify_token, changeTwoFAMethod);
+router.post("/updateTwoFAStatus", verify_token, updateTwoFAStatus);
 router.get("/viewProfile", verify_token, viewProfile);
 router.patch("/updateProfile", verify_token, updateProfile);
 router.patch("/updatePhoneNo", verify_token, updatePhoneNo);
