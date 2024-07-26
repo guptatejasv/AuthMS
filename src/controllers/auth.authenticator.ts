@@ -13,7 +13,12 @@ export const authenticator = async (req: Request, res: Response) => {
         const doc = await TwoFactorAuth.findOne({
           phone: req.body.phone,
         }).select("_id userId");
-        await TwoFactorAuth.findByIdAndDelete({ _id: doc?._id });
+        await TwoFactorAuth.findByIdAndUpdate(
+          { _id: doc?._id },
+          {
+            twoFAOtp: "",
+          }
+        );
 
         return res.status(200).json({
           status: "success",
