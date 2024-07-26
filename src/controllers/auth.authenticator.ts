@@ -33,7 +33,7 @@ export const authenticator = async (req: Request, res: Response) => {
     } else if (req.body.emailOTP && req.body.email) {
       const emailOTP = req.body.emailOTP;
 
-      const storedOtp = await TwoFactorAuth.findOne({ phone: req.body.phone });
+      const storedOtp = await TwoFactorAuth.findOne({ email: req.body.email });
 
       if (emailOTP == storedOtp?.twoFAEmailOtp) {
         const doc = await TwoFactorAuth.findOne({

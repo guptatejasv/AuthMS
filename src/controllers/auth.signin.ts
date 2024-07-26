@@ -53,6 +53,7 @@ export const signin = async (req: Request, res: Response) => {
           res.status(200).json({
             status: "success",
             token,
+            message: "You are logged in successfully..!",
           });
         }
       } else {
@@ -99,8 +100,8 @@ export const signin = async (req: Request, res: Response) => {
             OTP += digits[Math.floor(Math.random() * 10)];
           }
           if (tFAuser) {
-            tFAuser.twoFAOtp = OTP;
-            tFAuser.phone = user.phone;
+            tFAuser.twoFAEmailOtp = OTP;
+            tFAuser.email = user.email;
             await tFAuser.save();
           }
 
