@@ -5,6 +5,16 @@ import { TwoFactorAuth } from "../models/auth.auth";
 
 export const updateTwoFAStatus = async (req: Request, res: Response) => {
   try {
+    const id = req.user.id;
+    const userBlocked = await Auth.findById({ _id: id });
+    if (userBlocked) {
+      if (userBlocked.isBlocked) {
+        return res.status(400).json({
+          status: "fail",
+          message: "You are blocked, you cann't update your profile.",
+        });
+      }
+    }
     const { onOff } = req.body;
     const userId = req.user.id;
     // const user = await Auth.findById({ _id: userId }).select("isTwoFAEnable");

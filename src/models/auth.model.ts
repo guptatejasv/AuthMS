@@ -9,9 +9,17 @@ export interface IAuth extends Document {
     firstName: string;
     lastName: string;
   };
+
   dob: Date;
-  address: string;
-  isTwoFAEnable: false;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    pin: string;
+    country: string;
+  };
+  isTwoFAEnable: boolean;
+  isBlocked: boolean;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
   emailUpdateToken?: string;
@@ -48,7 +56,12 @@ const AuthSchema: Schema = new Schema(
         required: true,
       },
     },
+
     isTwoFAEnable: {
+      type: Boolean,
+      default: false,
+    },
+    isBlocked: {
       type: Boolean,
       default: false,
     },
@@ -62,8 +75,21 @@ const AuthSchema: Schema = new Schema(
       required: true,
     },
     address: {
-      type: String,
-      required: true,
+      street: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      pin: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
     },
     role: {
       type: String,
@@ -79,9 +105,7 @@ const AuthSchema: Schema = new Schema(
       type: Boolean,
       default: false,
     },
-    otp: {
-      type: String,
-    },
+
     emailUpdateToken: String,
     emailUpdateTokenExpires: Date,
     passwordResetToken: String,

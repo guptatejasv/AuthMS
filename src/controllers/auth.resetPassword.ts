@@ -19,16 +19,21 @@ export const resetPassword = async (req: Request, res: Response) => {
       });
     }
     const resetToken = token;
-    const user = await Auth.findOne({ passwordResetToken: resetToken });
+    const user = await Auth.findOne({
+      passwordResetToken: resetToken,
+      passwordResetExpires: { $gt: Date.now() },
+    });
+
     if (!user) {
       return res
         .status(400)
-        .json({ error: "Reset password token is invalid." });
+        .json({ error: "Reset password token is invalid or Expired." });
     }
-    const newHashedPassword = await bcrypt.hash(newPassword, 10);
+    const newHashedPassword = await bcrypt.hash(newPassword, 12);
     // Update password and clear the reset token
     user.password = newHashedPassword;
     user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
     await user.save();
     return res.status(200).json({ message: "Your password has been updated." });
   } catch (error) {

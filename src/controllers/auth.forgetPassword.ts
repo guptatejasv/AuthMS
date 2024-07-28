@@ -35,14 +35,12 @@ export const forgetPassword = async (req: Request, res: Response) => {
       .update(resetToken)
       .digest("hex");
 
-    user.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    user.passwordResetExpires = new Date(Date.now() + 1 * 30 * 1000); // 10 minutes
 
     await user.save();
 
     // 3) Send it to user's email
-    const resetURL = `${req.protocol}://${req.get(
-      "localhost:3000/api/v1/resetPassword"
-    )}/api/v1/users/resetPassword/${resetToken}`;
+    const resetURL = `http://localhost:3000/api/v1/users/resetPassword/${resetToken}`;
 
     const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
     console.log(resetURL);

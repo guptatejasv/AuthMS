@@ -19,7 +19,11 @@ export const signup = async (req: Request, res: Response) => {
       password,
       phone,
       dob,
-      address,
+      street,
+      city,
+      state,
+      pin,
+      country,
       firstName,
       lastName,
     } = req.body;
@@ -39,9 +43,6 @@ export const signup = async (req: Request, res: Response) => {
     if (!password) {
       return res.send({ message: "password is required!" });
     }
-    if (!address) {
-      return res.send({ message: "address is required!" });
-    }
 
     // const userExist = await Auth.findOne({ email });
     // if (userExist) {
@@ -54,12 +55,19 @@ export const signup = async (req: Request, res: Response) => {
       password: hashedPassword,
       phone,
       dob,
-      address,
+      address: {
+        street,
+        city,
+        state,
+        pin,
+        country,
+      },
       profile: {
         firstName,
         lastName,
       },
     });
+
     const secret = process.env.JWT_SECRET as string;
     const token = sign({ id: user._id }, secret, {
       expiresIn: "90d",
@@ -86,7 +94,7 @@ export const signup = async (req: Request, res: Response) => {
       otp: OTP,
     });
     req.user = user;
-    console.log(req.user._id);
+
     res.status(201).json({
       status: "Success",
       token,

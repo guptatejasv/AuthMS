@@ -2,7 +2,9 @@ import { Request, Response } from "express";
 
 import { TwoFactorAuth } from "../models/auth.auth";
 
-export const authenticator = async (req: Request, res: Response) => {
+import { verifyTotpToken } from "../helpers/authenticator";
+import { TwoFactorAuthMethod } from "../models/auth.twoFA";
+export const authenticators = async (req: Request, res: Response) => {
   try {
     if (req.body.phoneOTP && req.body.phone) {
       const phoneOtp = req.body.phoneOTP;
@@ -55,6 +57,22 @@ export const authenticator = async (req: Request, res: Response) => {
           status: "fail",
           message: "Invalid Otp...",
         });
+      }
+    } else if (req.body.email && req.body.token) {
+      const { email, token } = req.body;
+      const secret = await TwoFactorAuthMethod.findOne({ email });
+
+      if (secret) {
+        const isValid = verifyTotpToken(token, secret.secret);
+        console.log(isValid);
+        if (!isValid) {
+          return res.status(400).json({ error: "Invalid OTP" });
+        } else {
+          res.status(200).json({
+            status: "success",
+            message: "Otp is Verified. You are logged in Successfully...!",
+          });
+        }
       }
     }
   } catch (err) {

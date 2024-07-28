@@ -3,6 +3,8 @@ import { Schema, Document, model, ObjectId } from "mongoose";
 export interface IAuth extends Document {
   method: string;
   userId: ObjectId;
+  secret: string;
+  email: string;
 }
 
 const AuthSchema: Schema = new Schema(
@@ -17,6 +19,8 @@ const AuthSchema: Schema = new Schema(
       required: true,
       default: "phone",
     },
+    secret: String,
+    email: String,
   },
   {
     timestamps: true,

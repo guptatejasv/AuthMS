@@ -12,6 +12,16 @@ const client = twilio(accountSid, authToken);
 export const updatePhoneNo = async (req: Request, res: Response) => {
   try {
     const id = req.user.id;
+    const userBlocked = await Auth.findById({ _id: id });
+    if (userBlocked) {
+      if (userBlocked.isBlocked) {
+        return res.status(400).json({
+          status: "fail",
+          message: "You are blocked, you cann't update your profile.",
+        });
+      }
+    }
+
     const { newPhone } = req.body;
     const user = await Auth.findById(id);
     if (!user) {
