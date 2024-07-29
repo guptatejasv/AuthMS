@@ -3,7 +3,7 @@ import { TwoFactorAuthMethod } from "../models/auth.twoFA";
 import { Auth } from "../models/auth.model";
 import { TwoFactorAuth } from "../models/auth.auth";
 
-export const updateTwoFAStatus = async (req: Request, res: Response) => {
+export const onOffTwoFAStatus = async (req: Request, res: Response) => {
   try {
     const id = req.user.id;
     const userBlocked = await Auth.findById({ _id: id });
