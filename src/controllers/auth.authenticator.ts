@@ -10,17 +10,19 @@ export const authenticators = async (req: Request, res: Response) => {
       const phoneOtp = req.body.phoneOTP;
 
       const storedOtp = await TwoFactorAuth.findOne({ phone: req.body.phone });
-
-      if (phoneOtp == storedOtp?.twoFAOtp) {
-        const doc = await TwoFactorAuth.findOne({
-          phone: req.body.phone,
-        }).select("_id userId");
-        await TwoFactorAuth.findByIdAndUpdate(
-          { _id: doc?._id },
-          {
-            twoFAOtp: "",
-          }
-        );
+      if (storedOtp) {
+        if (phoneOtp == storedOtp.twoFAOtp) {
+          const doc = await TwoFactorAuth.findOne({
+            phone: req.body.phone,
+          }).select("_id userId");
+          await TwoFactorAuth.findByIdAndUpdate(
+            { _id: doc?._id },
+            {
+              twoFAOtp: "",
+            }
+          );
+        }
+        console.log(storedOtp);
 
         return res.status(200).json({
           status: "success",

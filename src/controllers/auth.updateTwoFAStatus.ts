@@ -8,10 +8,11 @@ export const updateTwoFAStatus = async (req: Request, res: Response) => {
     const id = req.user.id;
     const userBlocked = await Auth.findById({ _id: id });
     if (userBlocked) {
-      if (userBlocked.isBlocked) {
+      if (userBlocked.isBlocked == true || userBlocked.isVerified == false) {
         return res.status(400).json({
           status: "fail",
-          message: "You are blocked, you cann't update your profile.",
+          message:
+            "You are blocked or not verified user, you cann't access this service.",
         });
       }
     }

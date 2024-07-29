@@ -4,6 +4,8 @@ export interface IAuth extends Document {
   otp: string;
   userId: ObjectId;
   phone: string;
+  updateEmailOtp?: string;
+  updatePhoneOtp?: string;
 }
 
 const AuthSchema: Schema = new Schema(
@@ -18,6 +20,12 @@ const AuthSchema: Schema = new Schema(
       required: true,
     },
     otp: {
+      type: String,
+    },
+    updateEmailOtp: {
+      type: String,
+    },
+    updatePhoneOtp: {
       type: String,
     },
   },

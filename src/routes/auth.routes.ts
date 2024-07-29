@@ -6,10 +6,10 @@ import { resetPassword } from "../controllers/auth.resetPassword";
 import { viewProfile } from "../controllers/auth.viewProfile";
 import { verify_token } from "../helpers/jwtverify";
 import { updateProfile } from "../controllers/auth.updateProfile";
-import { verifyPhone } from "../controllers/auth.verifyPhone";
+import { verifyOtp } from "../controllers/auth.verifyOtp";
 import { updatePhoneNo } from "../controllers/auth.updatePhone";
 import { updateEmail } from "../controllers/auth.updateEmail";
-import { verifyNewEmail } from "../controllers/auth.verifyEmail";
+
 import { authenticators } from "../controllers/auth.authenticator";
 import { changeTwoFAMethod } from "../controllers/auth.changeTwoFAMethod";
 import { updateTwoFAStatus } from "../controllers/auth.updateTwoFAStatus";
@@ -19,8 +19,7 @@ router.post("/signup", signup);
 router.post("/signin", signin);
 router.post("/forgetPassword", forgetPassword);
 router.post("/resetPassword", resetPassword);
-router.post("/verify-phone", verifyPhone);
-router.post("/verifyNewEmail", verifyNewEmail);
+router.post("/verifyOtp", verifyOtp);
 router.post("/authenticator", authenticators);
 
 // Secured Routes

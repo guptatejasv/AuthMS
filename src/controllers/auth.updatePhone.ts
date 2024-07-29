@@ -14,27 +14,28 @@ export const updatePhoneNo = async (req: Request, res: Response) => {
     const id = req.user.id;
     const userBlocked = await Auth.findById({ _id: id });
     if (userBlocked) {
-      if (userBlocked.isBlocked) {
+      if (userBlocked.isBlocked == true || userBlocked.isVerified == false) {
         return res.status(400).json({
           status: "fail",
-          message: "You are blocked, you cann't update your profile.",
+          message:
+            "You are blocked or not verified user, you cann't update your phone number.",
         });
       }
     }
 
-    const { newPhone } = req.body;
-    const user = await Auth.findById(id);
+    const { phone } = req.body;
+    const user = await Auth.findOne({ phone });
     if (!user) {
       return res.status(400).json({
         status: "success",
-        message: "Something went wrong..",
+        message: "No user exist with this Phone no.",
       });
     }
 
-    await Auth.findByIdAndUpdate(id, {
-      phone: newPhone,
-      isVerified: false,
-    });
+    // await Auth.findByIdAndUpdate(id, {
+    //   phone: newPhone,
+    //   isVerified: false,
+    // });
 
     const digits = "0123456789";
     let OTP = "";
@@ -45,17 +46,17 @@ export const updatePhoneNo = async (req: Request, res: Response) => {
     await client.messages
       .create({
         body: `your otp verification for user is ${OTP}`,
-        to: `+91${newPhone}`,
+        to: `+91${phone}`,
         from: "+15078734130",
       })
       .then(() => {
         msg = "OTP sent to your phone no.";
       });
 
-    await Verification.create({
+    await Verification.findOneAndUpdate({
       userId: user._id,
-      phone: user.phone,
-      otp: OTP,
+      phone: phone,
+      updatePhoneOtp: OTP,
     });
     res.status(200).json({
       status: "success",

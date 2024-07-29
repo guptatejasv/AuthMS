@@ -1,9 +1,21 @@
 import { Request, Response } from "express";
 import { TwoFactorAuthMethod } from "../models/auth.twoFA";
+import { Auth } from "../models/auth.model";
 
 export const changeTwoFAMethod = async (req: Request, res: Response) => {
   try {
     const userId = req.user.id;
+    const id = req.user.id;
+    const userBlocked = await Auth.findById({ _id: id });
+    if (userBlocked) {
+      if (userBlocked.isBlocked == true || userBlocked.isVerified == false) {
+        return res.status(400).json({
+          status: "fail",
+          message:
+            "You are blocked or not verified user, you cann't change Two Factor Method.",
+        });
+      }
+    }
     console.log(userId);
     const { changeMethod } = req.body;
     if (!changeMethod) {
