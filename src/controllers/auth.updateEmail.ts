@@ -7,7 +7,7 @@ import { Verification } from "../models/auth.verification";
 
 // Your email transporter configuration
 const transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
+  host: "smtp.mailgun.org",
   port: 587,
   auth: {
     user: process.env.EMAIL_USER,
