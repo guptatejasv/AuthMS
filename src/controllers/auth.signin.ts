@@ -9,6 +9,8 @@ import dotenv from "dotenv";
 import nodemailer from "nodemailer";
 import qrcode from "qrcode";
 import { authenticator } from "otplib";
+
+
 const transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
   port: 587,
@@ -69,6 +71,7 @@ export const signin = async (req: Request, res: Response) => {
         const token = sign({ id: user._id }, secret, {
           expiresIn: "90d",
         });
+        // sendToQueue(token);
         if (user && isMatch) {
           res.status(200).json({
             status: "success",

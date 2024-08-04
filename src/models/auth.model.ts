@@ -1,4 +1,4 @@
-import { Schema, Document, model } from "mongoose";
+import { Schema, Document, model, ObjectId } from "mongoose";
 
 export interface IAuth extends Document {
   email: string;
@@ -20,6 +20,7 @@ export interface IAuth extends Document {
   };
   isTwoFAEnable: boolean;
   isBlocked: boolean;
+  isBlockedBy?: ObjectId;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
   emailUpdateToken?: string;
@@ -65,6 +66,10 @@ const AuthSchema: Schema = new Schema(
       type: Boolean,
       default: false,
     },
+    isBlockedBy: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
+    },
     phone: {
       type: String,
       required: true,
@@ -93,7 +98,7 @@ const AuthSchema: Schema = new Schema(
     },
     role: {
       type: String,
-      enum: ["admin", "superAdmin", "user"],
+      enum: ["seller", "user"],
       default: "user",
     },
 

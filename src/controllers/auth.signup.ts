@@ -26,6 +26,7 @@ export const signup = async (req: Request, res: Response) => {
       country,
       firstName,
       lastName,
+      role,
     } = req.body;
     if (!username) {
       return res.send({ message: "Username is required!" });
@@ -66,6 +67,7 @@ export const signup = async (req: Request, res: Response) => {
         firstName,
         lastName,
       },
+      role,
     });
 
     const secret = process.env.JWT_SECRET as string;
