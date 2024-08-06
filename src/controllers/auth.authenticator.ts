@@ -29,7 +29,7 @@ export const authenticators = async (req: Request, res: Response) => {
             const secret = process.env.JWT_SECRET as string;
 
             token = sign({ id: doc.userId }, secret, {
-              expiresIn: "90d",
+              expiresIn: "1h",
             });
             const loginHistory = new LoginHistory({
               userId: doc._id,
@@ -69,7 +69,7 @@ export const authenticators = async (req: Request, res: Response) => {
           const secret = process.env.JWT_SECRET as string;
 
           token = sign({ id: doc.userId }, secret, {
-            expiresIn: "90d",
+            expiresIn: "1h",
           });
           const loginHistory = new LoginHistory({
             userId: doc._id,
@@ -98,7 +98,7 @@ export const authenticators = async (req: Request, res: Response) => {
         const secret_jwt = process.env.JWT_SECRET as string;
 
         logToken = sign({ id: doc._id }, secret_jwt, {
-          expiresIn: "90d",
+          expiresIn: "1h",
         });
         const loginHistory = new LoginHistory({
           userId: doc._id,

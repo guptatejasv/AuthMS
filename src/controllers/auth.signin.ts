@@ -52,12 +52,7 @@ export const signin = async (req: Request, res: Response) => {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-      // if (user.isBlocked == true) {
-      //   return res.status(400).json({
-      //     status: "fail",
-      //     message: "You are blocked, you cann't sign in your account..!",
-      //   });
-      // }
+
       if (user.isTwoFAEnable == false) {
         const isMatch = await bcrypt.compare(password, user.password);
 
@@ -68,7 +63,7 @@ export const signin = async (req: Request, res: Response) => {
         const secret = process.env.JWT_SECRET as string;
 
         const token = sign({ id: user._id }, secret, {
-          expiresIn: "90d",
+          expiresIn: "1h",
         });
 
         const loginHistory = new LoginHistory({
@@ -190,7 +185,7 @@ export const signin = async (req: Request, res: Response) => {
         const secret = process.env.JWT_SECRET as string;
 
         const token = sign({ id: user._id }, secret, {
-          expiresIn: "90d",
+          expiresIn: "1h",
         });
 
         const loginHistory = new LoginHistory({
@@ -214,7 +209,7 @@ export const signin = async (req: Request, res: Response) => {
         const secret = process.env.JWT_SECRET as string;
 
         const token = sign({ id: user._id }, secret, {
-          expiresIn: "90d",
+          expiresIn: "1h",
         });
         if (tFAuserMethod?.method == "phone") {
           const digits = "0123456789";
