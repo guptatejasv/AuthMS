@@ -4,7 +4,8 @@ import { Auth } from "../models/auth.model";
 
 import crypto from "crypto";
 import nodemailer from "nodemailer";
-
+import dotenv from "dotenv";
+dotenv.config();
 // Your email transporter configuration
 const transporter = nodemailer.createTransport({
   host: "smtp.mailgun.org",
@@ -34,8 +35,6 @@ export const forgetPassword = async (req: Request, res: Response) => {
       .createHash("sha256")
       .update(resetToken)
       .digest("hex");
-
-    user.passwordResetExpires = new Date(Date.now() + 1 * 30 * 1000); // 10 minutes
 
     await user.save();
 

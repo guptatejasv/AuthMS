@@ -9,18 +9,17 @@ import dotenv from "dotenv";
 import nodemailer from "nodemailer";
 import qrcode from "qrcode";
 import { authenticator } from "otplib";
+import { LoginHistory } from "../models/auth.loginHistories";
 
-
+dotenv.config();
 const transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
+  host: "smtp.mailgun.org",
   port: 587,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
 });
-
-dotenv.config();
 const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
@@ -71,7 +70,13 @@ export const signin = async (req: Request, res: Response) => {
         const token = sign({ id: user._id }, secret, {
           expiresIn: "90d",
         });
-        // sendToQueue(token);
+
+        const loginHistory = new LoginHistory({
+          userId: user._id,
+          ipAddress: req.ip,
+        });
+
+        await loginHistory.save();
         if (user && isMatch) {
           res.status(200).json({
             status: "success",
@@ -84,11 +89,7 @@ export const signin = async (req: Request, res: Response) => {
           userId: user._id,
         });
         const tFAuser = await TwoFactorAuth.findOne({ userId: user._id });
-        const secret = process.env.JWT_SECRET as string;
 
-        const token = sign({ id: user._id }, secret, {
-          expiresIn: "90d",
-        });
         if (tFAuserMethod?.method == "phone") {
           const digits = "0123456789";
           let OTP = "";
@@ -113,7 +114,7 @@ export const signin = async (req: Request, res: Response) => {
           }
           res.status(200).json({
             status: "success",
-            token,
+
             message: `${msg}.You need to verify your number.`,
           });
         } else if (tFAuserMethod?.method == "email") {
@@ -139,7 +140,6 @@ export const signin = async (req: Request, res: Response) => {
 
           res.status(200).json({
             status: "success",
-            token,
             message:
               "Two Factor Authentication OTP has been sent to your email...!",
           });
@@ -155,7 +155,7 @@ export const signin = async (req: Request, res: Response) => {
           return res.status(200).json({
             data: {
               secret: tFAuserMethod.secret,
-              token,
+
               qrCode: qr,
             },
           });
@@ -192,6 +192,13 @@ export const signin = async (req: Request, res: Response) => {
         const token = sign({ id: user._id }, secret, {
           expiresIn: "90d",
         });
+
+        const loginHistory = new LoginHistory({
+          userId: user._id,
+          ipAddress: req.ip,
+        });
+
+        await loginHistory.save();
         if (user && isMatch) {
           res.status(200).json({
             status: "success",
