@@ -4,6 +4,7 @@ export interface IAuth extends Document {
   userId: ObjectId;
   loginTime: Date;
   ipAdress: string;
+  role: string;
 }
 
 const AuthSchema: Schema = new Schema(
@@ -15,6 +16,10 @@ const AuthSchema: Schema = new Schema(
     },
 
     ipAddress: {
+      type: String,
+      required: true,
+    },
+    role: {
       type: String,
       required: true,
     },

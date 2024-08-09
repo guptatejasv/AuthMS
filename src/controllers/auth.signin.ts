@@ -63,12 +63,13 @@ export const signin = async (req: Request, res: Response) => {
         const secret = process.env.JWT_SECRET as string;
 
         const token = sign({ id: user._id }, secret, {
-          expiresIn: "1h",
+          expiresIn: "90d",
         });
 
         const loginHistory = new LoginHistory({
           userId: user._id,
           ipAddress: req.ip,
+          role: user.role,
         });
 
         await loginHistory.save();
@@ -185,7 +186,7 @@ export const signin = async (req: Request, res: Response) => {
         const secret = process.env.JWT_SECRET as string;
 
         const token = sign({ id: user._id }, secret, {
-          expiresIn: "1h",
+          expiresIn: "90d",
         });
 
         const loginHistory = new LoginHistory({
@@ -209,7 +210,7 @@ export const signin = async (req: Request, res: Response) => {
         const secret = process.env.JWT_SECRET as string;
 
         const token = sign({ id: user._id }, secret, {
-          expiresIn: "1h",
+          expiresIn: "90d",
         });
         if (tFAuserMethod?.method == "phone") {
           const digits = "0123456789";

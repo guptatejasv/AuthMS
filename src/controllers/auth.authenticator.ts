@@ -29,11 +29,13 @@ export const authenticators = async (req: Request, res: Response) => {
             const secret = process.env.JWT_SECRET as string;
 
             token = sign({ id: doc.userId }, secret, {
-              expiresIn: "1h",
+              expiresIn: "90d",
             });
+            const user = await Auth.findById(doc._id);
             const loginHistory = new LoginHistory({
               userId: doc._id,
               ipAddress: req.ip,
+              role: user?._id,
             });
             await loginHistory.save();
           }
@@ -69,11 +71,13 @@ export const authenticators = async (req: Request, res: Response) => {
           const secret = process.env.JWT_SECRET as string;
 
           token = sign({ id: doc.userId }, secret, {
-            expiresIn: "1h",
+            expiresIn: "90d",
           });
+          const user = await Auth.findById(doc._id);
           const loginHistory = new LoginHistory({
             userId: doc._id,
             ipAddress: req.ip,
+            role: user?._id,
           });
           await loginHistory.save();
         }
@@ -98,11 +102,13 @@ export const authenticators = async (req: Request, res: Response) => {
         const secret_jwt = process.env.JWT_SECRET as string;
 
         logToken = sign({ id: doc._id }, secret_jwt, {
-          expiresIn: "1h",
+          expiresIn: "90d",
         });
+        const user = await Auth.findById(doc._id);
         const loginHistory = new LoginHistory({
           userId: doc._id,
           ipAddress: req.ip,
+          role: user?._id,
         });
         await loginHistory.save();
       }
